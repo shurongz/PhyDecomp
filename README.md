@@ -151,26 +151,6 @@ CHECKPOINT_DIR = '/path/to/checkpoints'
 REFERENCE_DIR  = '/path/to/your/data/reference'
 ```
 
-### Sample Data
-
-A small sample scene (San Francisco L-band, cropped) is provided in `sample_data/` for quick testing.
-
----
-
-## Pretrained Checkpoints
-
-Pretrained checkpoints for all three decomposition types are available in `checkpoints/`:
-
-| Model | File | Scene |
-|-------|------|-------|
-| 3-component | `checkpoint_3comp.pth` | San Francisco L-band |
-| 4-component | `checkpoint_4comp.pth` | San Francisco L-band |
-| 6-component | `checkpoint_6comp.pth` | San Francisco L-band |
-
-> These checkpoints are trained on the San Francisco L-band scene. For other scenes, we recommend fine-tuning or retraining from scratch.
-
----
-
 ## Usage
 
 ### Training
@@ -182,9 +162,9 @@ python train.py \
   --batch_size 8 \
   --patch_size 128 \
   --lr 1e-4 \
-  --recon_lambda 1.0 \
-  --reference_lambda 0.1 \
-  --smooth_lambda 0.1
+  --recon_lambda 0.5 \
+  --reference_lambda 1 \
+  --smooth_lambda 0.3
 ```
 
 ### Inference Only
@@ -212,9 +192,9 @@ python train.py \
 | `--batch_size` | `8` | Batch size |
 | `--patch_size` | `128` | Training patch size |
 | `--lr` | `1e-4` | Learning rate |
-| `--recon_lambda` | `1.0` | Reconstruction loss weight |
-| `--reference_lambda` | `0.1` | Reference comparison loss weight |
-| `--smooth_lambda` | `0.1` | TV smoothness loss weight |
+| `--recon_lambda` | `0.5` | Reconstruction loss weight |
+| `--reference_lambda` | `1` | Reference comparison loss weight |
+| `--smooth_lambda` | `0.3` | TV smoothness loss weight |
 | `--reference_dir` | (config) | Path to classical decomposition references |
 | `--inference` | `False` | Run inference only (no training) |
 | `--roi` | `None` | Region of interest: `row_start row_end col_start col_end` |
@@ -237,41 +217,6 @@ OUTPUT_DIR/
 
 ---
 
-## Method
-
-### Architecture
-
-```
-Input [B, 9, H, W]  (normalized log-domain T3 channels)
-        │
-   ┌────▼────┐
-   │ Encoder │  (3× strided conv + SE-ResBlock)
-   └────┬────┘
-        │
-   ┌────▼──────────┐
-   │  MoE Bottleneck│  (Gumbel-Softmax routing → N expert SE-ResBlocks)
-   └────┬──────────┘
-        │
-   ┌────▼──────────────┐
-   │  Parameter Heads  │  (ps, pd, pv, ph, pod, pcd, β, α, θ)
-   └────┬──────────────┘
-        │
-   ┌────▼────────────────────┐
-   │  Physics Reconstruction │  (scattering component models)
-   └────┬────────────────────┘
-        │
-   Output T3 [B, 3, 3, H, W]
-```
-
-### Loss Function
-
-$$\mathcal{L} = \lambda_{\text{recon}} \mathcal{L}_{\text{recon}} + \lambda_{\text{ref}} \mathcal{L}_{\text{ref}} + \lambda_{\text{smooth}} \mathcal{L}_{\text{smooth}}$$
-
-| Loss | Description |
-|------|-------------|
-| $\mathcal{L}_{\text{recon}}$ | MSE between predicted and input T3 matrix (linear + log domain) |
-| $\mathcal{L}_{\text{ref}}$ | Huber loss comparing predicted powers against classical decomposition results |
-| $\mathcal{L}_{\text{smooth}}$ | Edge-aware Total Variation regularization on scattering power maps |
 
 ### Supported Decomposition Schemes
 
@@ -281,20 +226,7 @@ $$\mathcal{L} = \lambda_{\text{recon}} \mathcal{L}_{\text{recon}} + \lambda_{\te
 | 4-comp | Ps, Pd, Pv, Ph | 3 (MoE) | Yamaguchi et al. |
 | 6-comp | Ps, Pd, Pv, Ph, Pod, Pcd | 4 (MoE) | Singh et al. (i6SD) |
 
----
 
-## Citation
-
-If you find this work useful, please cite:
-
-```bibtex
-@article{zhang2025phydecomp,
-  title     = {PhyDecomp: A General Physics-Guided Framework for PolSAR Decomposition},
-  author    = {Zhang, Shurong and others},
-  journal   = {Under Review},
-  year      = {2025}
-}
-```
 
 ---
 
