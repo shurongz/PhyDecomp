@@ -1,6 +1,6 @@
-# PhyDecomp
-PhyDecomp is a general physics-guided deep learning framework for polarimetric SAR (PolSAR) target decomposition. It supports 3-, 4-, and 6-component decomposition schemes under a unified encoder–MoE–decoder architecture, integrating physical scattering models with data-driven learning.
-# PhyDecomp: A General Physics-Guided Framework for PolSAR Decomposition
+# PELNet
+PELNet is a general physics-guided deep learning framework for polarimetric SAR (PolSAR) target decomposition. It supports 3-, 4-, and 6-component decomposition schemes under a unified encoder–MoE–decoder architecture, integrating physical scattering models with data-driven learning.
+# PELNet: A General Physics-Embedded Learning Framework for Polarimetric Target Decomposition
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.8%2B-blue" />
@@ -9,7 +9,7 @@ PhyDecomp is a general physics-guided deep learning framework for polarimetric S
   <img src="https://img.shields.io/badge/Status-Under%20Review-yellow" />
 </p>
 
-> **PhyDecomp** is a general physics-guided deep learning framework for polarimetric SAR (PolSAR) target decomposition. It supports 3-, 4-, and 6-component decomposition schemes under a unified encoder–MoE–decoder architecture, integrating physical scattering models with data-driven learning.
+> **PELNet** is a general physics-guided deep learning framework for polarimetric SAR (PolSAR) target decomposition. It supports 3-, 4-, and 6-component decomposition schemes under a unified encoder–MoE–decoder architecture, integrating physical scattering models with data-driven learning.
 
 ---
 
@@ -31,7 +31,7 @@ PhyDecomp is a general physics-guided deep learning framework for polarimetric S
 
 PolSAR target decomposition separates the backscattered signal into physically interpretable scattering mechanisms (surface, double-bounce, volume, helix, etc.). Traditional model-based methods rely on fixed physical assumptions, which limits their flexibility across diverse scenes.
 
-**PhyDecomp** addresses this by:
+**PELNet** addresses this by:
 - Unifying 3-, 4-, and 6-component decomposition under one CNN-based autoencoder
 - Incorporating a **Mixture-of-Experts (MoE)** bottleneck to adaptively select volume scattering models
 - Combining **reconstruction loss**, **reference comparison loss** (against classical decompositions), and **smoothness loss** for physically consistent results
@@ -42,7 +42,7 @@ PolSAR target decomposition separates the backscattered signal into physically i
 ## Repository Structure
 
 ```
-PhyDecomp/
+PELNet/
 ├── config.py                    # Global configuration (paths, hyperparameters)
 ├── data_import.py               # Data loading and preprocessing utilities
 ├── dataset.py                   # PolSAR PyTorch Dataset with patch sampling
