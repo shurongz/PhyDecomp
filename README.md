@@ -78,7 +78,7 @@ PELNet/
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/YOUR_USERNAME/PhyDecomp.git
+git clone https://github.com/shurongz/PhyDecomp.git
 cd PhyDecomp
 
 # 2. Create a virtual environment (recommended)
